@@ -25,9 +25,17 @@ class Kitco
   SYMBOLS.each do |symbol|
     class_eval <<-RUBY_EVAL
       def self.#{symbol}
-        request :#{symbol}
+        (request :#{symbol}).merge(metal: '#{symbol}')
       end
     RUBY_EVAL
+  end
+
+  def self.all
+    all = []
+    SYMBOLS.each do |symbol|
+      all.push(send(symbol))
+    end
+    return all
   end
 
   class << self
